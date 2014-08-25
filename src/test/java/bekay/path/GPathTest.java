@@ -22,7 +22,8 @@ public class GPathTest {
 	
 	@Test
 	public void testGetter() {
-		Object o = GPath.read(new Dummy(), "c");		
+		Object o = GPath.read(new Dummy(), "c"); 		
+		System.err.println(o);
 		System.err.println(o);
 		assertThat ( (String)o , is ( "init with getter" ));
 	}
