@@ -14,70 +14,74 @@ public class GPathTest {
 
 	@Test
 	public void testAttrib() {
-		Object o = GPath.read(new Dummy(), "a");		
+		Object o = GPath.read(new Dummy(), "attrb10");		
 		System.err.println(o);
 		assertThat ( (Integer)o , is ( new Integer(10) ));
 	}
 	
 	
 	@Test
-	public void testGetter() {
-		Object o = GPath.read(new Dummy(), "c"); 		
+	public void testAttribWithGetter() {
+		Object o = GPath.read(new Dummy(), "attribTenWithGetter"); 		
 		System.err.println(o);
 		System.err.println(o);
-		assertThat ( (String)o , is ( "init with getter" ));
+		assertThat ( (String)o , is ( "Ten with getter" ));
 	}
 	
 	
 	@Test
-	public void testMap() {
-		Object o = GPath.read(new Dummy(), "e.map.key1");		
+	public void testPathWithObject() {
+		Object o = GPath.read(new Dummy(), "attribObj.attribMap.key1");		
 		System.err.println(o);
-		assertThat ( (Integer)o , is ( 10 ));
+		assertThat ( (Integer)o , is ( 9 ));
 	}
 	
 	@Test
-	public void testList() {
-		Object o = GPath.read(new Dummy(), "d[0]");		
+	public void testPathWithIndex() {
+		Object o = GPath.read(new Dummy(), "attribObj.attribList[0]");		
 		System.err.println(o);
-		assertThat ( (String)o , is ( "first" ));
+		assertThat ( (Integer)o , is ( 6 ));
+	}
+	
+	@Test
+	public void testPathWhenIndexIsMiddleOfPath() {
+		Object o = GPath.read(new Dummy(), "attribObj.attribList[2].attrib5");		
+		System.err.println(o);
+		assertThat ( (Integer)o , is ( 5 ));
 	}
 	
 	
 	public class Dummy {
-		private int 	a ;
-		private String 	c;
-		private List 	d;  
-		private Dummy2 e;  
-		
-		public Dummy() {
-			a =  10;
-			c = "init";
-			d  = new ArrayList();
-			d.add("first");
-			d.add("second");
-			e = new Dummy2() ; 
-		}	
-		
-		public void setC ( String d) {
-			this.c = c;
-		}
-		
-		public String getC ( ) {
-			return this.c + " with getter";
+		private int 	attrb10  =  10;
+		private String 	attribTenWithGetter  = "Ten";
+		private Dummy2  attribObj = new Dummy2() ; 
+						
+		public String getAttribTenWithGetter ( ) {
+			return this.attribTenWithGetter + " with getter";
 			
 		}
 	}
 	
 	public class Dummy2 {
-		private Map map ;
+		private Map  attribMap ;
+		private List attribList ;
 		
 		public Dummy2() {
-			map = new HashMap();
-			map.put("key1", 10);
-			map.put("key2", "321");
+			this.attribMap = new HashMap();
+			this.attribMap .put("key1", 9);
+			
+			this.attribList = new ArrayList();
+			this.attribList.add(6);
+			this.attribList.add("SIX");
+			this.attribList.add(new Dummy3());
+			
 		}
 		
 	}
 
+	public class Dummy3 {
+		private int  attrib5 = 5;
+		
+	}
+	
 }
